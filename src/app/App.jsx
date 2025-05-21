@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { SearchInput } from "./SearchInput";
+import { SuggestField } from "./SuggestField";
 
 const API_KEY = "a9bd50909a544a9c84172455241312";
 
@@ -14,6 +15,7 @@ export default function App() {
   const [dayPic, setDayPic] = useState(null);
   const [nightPic, setNightPic] = useState(null);
   const [todayDate, setTodayDate] = useState(null);
+  const [countries, setCountries] = useState([]);
 
   const onChangeText = (event) => {
     setSearch(event.target.value);
@@ -37,33 +39,39 @@ export default function App() {
         setTodayDate(data?.forecast?.forecastday[0]?.date);
 
         const condition = dayData?.condition?.text.toLowerCase();
+        console.log(dayData);
 
         if (condition?.includes("sun")) {
-          setDayPic("Sun.png");
-          setNightPic("night.png");
+          setDayPic("/imgs/Sun.png");
+          setNightPic("/imgs/night.png");
         } else if (
           condition.includes("cloud") ||
           condition.includes("overcast") ||
           condition.includes("mist")
         ) {
-          setDayPic("SunClouds.png");
-          setNightPic("MoonCloud.png");
+          setDayPic("/imgs/SunClouds.png");
+          setNightPic("/imgs/MoonCloud.png");
         } else if (
           condition?.includes("snow") ||
           condition?.includes("freezing")
         ) {
-          setDayPic("SunSnow.png");
-          setNightPic("MoonSnow.png");
+          setDayPic("/imgs/SunSnow.png");
+          setNightPic("/imgs/MoonSnow.png");
         } else if (condition.includes("rain")) {
-          setDayPic("sunRain.png");
-          setNightPic("moonRain.png");
+          setDayPic("/imgs/sunRain.png");
+          setNightPic("/imgs/moonRain.png");
         } else {
-          setDayPic("Sun.png");
-          setNightPic("night.png");
+          setDayPic("/imgs/Sun.png");
+          setNightPic("/imgs/night.png");
         }
       });
     });
+
+    fetch("https://countriesnow.space/api/v0.1/countries").then((response) =>
+      response.json().then((data) => setCountries(data))
+    );
   }, [city]);
+  console.log(countries);
 
   return (
     <div className="w-full h-[1454px] bg-[#404040] flex items-center justify-center">
@@ -73,6 +81,12 @@ export default function App() {
           onChangeText={onChangeText}
           onPressEnter={onPressEnter}
         />
+        <div className=" relative">
+          {countries?.data &&
+            countries.data.map((country) => {
+              country.cities.map((city) => {});
+            })}
+        </div>
 
         <Card
           value="day"
@@ -84,7 +98,7 @@ export default function App() {
         />
         <img
           className="w-[200px] h-[200px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border rounded-full bg-[#F3F4F6]"
-          src="middle.png"
+          src="/imgs/middle.png"
           alt="Logo"
         />
       </div>
