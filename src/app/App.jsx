@@ -7,7 +7,7 @@ const API_KEY = "a9bd50909a544a9c84172455241312";
 
 export default function App() {
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState("Darhan");
+  const [city, setCity] = useState("Krakow");
   const [dayTemp, setDayTemp] = useState("..");
   const [nightTemp, setNightTemp] = useState("..");
   const [conditions, setConditions] = useState("");
